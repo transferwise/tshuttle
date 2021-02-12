@@ -2,7 +2,7 @@ import re
 import socket
 from argparse import ArgumentParser, Action, ArgumentTypeError as Fatal
 
-from sshuttle import __version__
+from tshuttle import __version__
 
 
 # Subnet file, supporting empty lines and hash-started comment lines
@@ -167,7 +167,7 @@ class MyArgumentParser(ArgumentParser):
 
 
 parser = MyArgumentParser(
-    prog="sshuttle",
+    prog="tshuttle",
     usage="%(prog)s [-l [ip:]port] [-r [user@]sshserver[:port]] <subnets...>",
     fromfile_prefix_chars="@"
 )
@@ -365,7 +365,7 @@ parser.add_argument(
 parser.add_argument(
     "--pidfile",
     metavar="PATH",
-    default="./sshuttle.pid",
+    default="./tshuttle.pid",
     help="""
     pidfile name (only if using --daemon) [%(default)s]
     """
@@ -394,7 +394,7 @@ parser.add_argument(
     "--sudoers",
     action="store_true",
     help="""
-    Add sshuttle to the sudoers for this user
+    Add tshuttle to the sudoers for this user
     """
 )
 parser.add_argument(
@@ -415,10 +415,10 @@ parser.add_argument(
 )
 parser.add_argument(
     "--sudoers-filename",
-    default="sshuttle_auto",
+    default="tshuttle_auto",
     help="""
     Set the file name for the sudoers.d file to be added. Default is
-    "sshuttle_auto". Only works with --sudoers or --sudoers-no-modify option.
+    "tshuttle_auto". Only works with --sudoers or --sudoers-no-modify option.
     """
 )
 parser.add_argument(

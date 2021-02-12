@@ -3,7 +3,7 @@ import socket
 import struct
 import errno
 import ipaddress
-from sshuttle.helpers import Fatal, debug3
+from tshuttle.helpers import Fatal, debug3
 
 
 def original_dst(sock):
@@ -103,7 +103,7 @@ class BaseMethod(object):
 
 
 def get_method(method_name):
-    module = importlib.import_module("sshuttle.methods.%s" % method_name)
+    module = importlib.import_module("tshuttle.methods.%s" % method_name)
     return module.Method(method_name)
 
 

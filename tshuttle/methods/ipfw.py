@@ -1,7 +1,7 @@
 import os
 import subprocess as ssubprocess
-from sshuttle.methods import BaseMethod
-from sshuttle.helpers import log, debug1, debug2, debug3, \
+from tshuttle.methods import BaseMethod
+from tshuttle.helpers import log, debug1, debug2, debug3, \
     Fatal, family_to_string, get_env, which
 
 recvmsg = None
@@ -67,8 +67,8 @@ def ipfw_rule_exists(n):
     for line in p.stdout:
         if line.startswith(b'%05d ' % n):
             if not ('ipttl 63' in line or 'check-state' in line):
-                log('non-sshuttle ipfw rule: %r' % line.strip())
-                raise Fatal('non-sshuttle ipfw rule #%d already exists!' % n)
+                log('non-tshuttle ipfw rule: %r' % line.strip())
+                raise Fatal('non-tshuttle ipfw rule #%d already exists!' % n)
             found = True
     rv = p.wait()
     if rv:
@@ -120,7 +120,7 @@ def sysctl_set(name, val, permanent=False):
             debug1('>>   ...saving permanently in /etc/sysctl.conf')
             f = open('/etc/sysctl.conf', 'a')
             f.write('\n'
-                    '# Added by sshuttle\n'
+                    '# Added by tshuttle\n'
                     '%s=%s\n' % (name, val))
             f.close()
         else:

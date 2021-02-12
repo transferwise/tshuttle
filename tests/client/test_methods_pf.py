@@ -3,9 +3,9 @@ from socket import AF_INET, AF_INET6
 
 import pytest
 from unittest.mock import Mock, patch, call, ANY
-from sshuttle.methods import get_method
-from sshuttle.helpers import Fatal, get_env
-from sshuttle.methods.pf import FreeBsd, Darwin, OpenBsd
+from tshuttle.methods import get_method
+from tshuttle.helpers import Fatal, get_env
+from tshuttle.methods.pf import FreeBsd, Darwin, OpenBsd
 
 
 def test_get_supported_features():
@@ -16,7 +16,7 @@ def test_get_supported_features():
     assert features.dns
 
 
-@patch('sshuttle.helpers.verbose', new=3)
+@patch('tshuttle.helpers.verbose', new=3)
 def test_get_tcp_dstip():
     sock = Mock()
     sock.getpeername.return_value = ("127.0.0.1", 1024)
@@ -86,10 +86,10 @@ def test_assert_features():
         method.assert_features(features)
 
 
-@patch('sshuttle.methods.pf.pf', Darwin())
-@patch('sshuttle.methods.pf.sys.stdout')
-@patch('sshuttle.methods.pf.ioctl')
-@patch('sshuttle.methods.pf.pf_get_dev')
+@patch('tshuttle.methods.pf.pf', Darwin())
+@patch('tshuttle.methods.pf.sys.stdout')
+@patch('tshuttle.methods.pf.ioctl')
+@patch('tshuttle.methods.pf.pf_get_dev')
 def test_firewall_command_darwin(mock_pf_get_dev, mock_ioctl, mock_stdout):
     method = get_method('pf')
     assert not method.firewall_command("somthing")
@@ -109,10 +109,10 @@ def test_firewall_command_darwin(mock_pf_get_dev, mock_ioctl, mock_stdout):
     ]
 
 
-@patch('sshuttle.methods.pf.pf', FreeBsd())
-@patch('sshuttle.methods.pf.sys.stdout')
-@patch('sshuttle.methods.pf.ioctl')
-@patch('sshuttle.methods.pf.pf_get_dev')
+@patch('tshuttle.methods.pf.pf', FreeBsd())
+@patch('tshuttle.methods.pf.sys.stdout')
+@patch('tshuttle.methods.pf.ioctl')
+@patch('tshuttle.methods.pf.pf_get_dev')
 def test_firewall_command_freebsd(mock_pf_get_dev, mock_ioctl, mock_stdout):
     method = get_method('pf')
     assert not method.firewall_command("somthing")
@@ -132,10 +132,10 @@ def test_firewall_command_freebsd(mock_pf_get_dev, mock_ioctl, mock_stdout):
     ]
 
 
-@patch('sshuttle.methods.pf.pf', OpenBsd())
-@patch('sshuttle.methods.pf.sys.stdout')
-@patch('sshuttle.methods.pf.ioctl')
-@patch('sshuttle.methods.pf.pf_get_dev')
+@patch('tshuttle.methods.pf.pf', OpenBsd())
+@patch('tshuttle.methods.pf.sys.stdout')
+@patch('tshuttle.methods.pf.ioctl')
+@patch('tshuttle.methods.pf.pf_get_dev')
 def test_firewall_command_openbsd(mock_pf_get_dev, mock_ioctl, mock_stdout):
     method = get_method('pf')
     assert not method.firewall_command("somthing")
@@ -166,11 +166,11 @@ def pfctl(args, stdin=None):
     return None
 
 
-@patch('sshuttle.helpers.verbose', new=3)
-@patch('sshuttle.methods.pf.pf', Darwin())
-@patch('sshuttle.methods.pf.pfctl')
-@patch('sshuttle.methods.pf.ioctl')
-@patch('sshuttle.methods.pf.pf_get_dev')
+@patch('tshuttle.helpers.verbose', new=3)
+@patch('tshuttle.methods.pf.pf', Darwin())
+@patch('tshuttle.methods.pf.pfctl')
+@patch('tshuttle.methods.pf.ioctl')
+@patch('tshuttle.methods.pf.pf_get_dev')
 def test_setup_firewall_darwin(mock_pf_get_dev, mock_ioctl, mock_pfctl):
     mock_pfctl.side_effect = pfctl
 
@@ -199,7 +199,7 @@ def test_setup_firewall_darwin(mock_pf_get_dev, mock_ioctl, mock_pfctl):
         call('-s Interfaces -i lo -v'),
         call('-f /dev/stdin', b'pass on lo\n'),
         call('-s all'),
-        call('-a sshuttle6-1024 -f /dev/stdin',
+        call('-a tshuttle6-1024 -f /dev/stdin',
              b'table <dns_servers> {2404:6800:4004:80c::33}\n'
              b'rdr pass on lo0 inet6 proto tcp from ! ::1 to '
              b'2404:6800:4004:80c::/64 port 8000:9000 -> ::1 port 1024\n'
@@ -251,7 +251,7 @@ def test_setup_firewall_darwin(mock_pf_get_dev, mock_ioctl, mock_pfctl):
         call('-s Interfaces -i lo -v'),
         call('-f /dev/stdin', b'pass on lo\n'),
         call('-s all'),
-        call('-a sshuttle-1025 -f /dev/stdin',
+        call('-a tshuttle-1025 -f /dev/stdin',
              b'table <dns_servers> {1.2.3.33}\n'
              b'rdr pass on lo0 inet proto tcp from ! 127.0.0.1 to 1.2.3.0/24 '
              b'-> 127.0.0.1 port 1025\n'
@@ -270,7 +270,7 @@ def test_setup_firewall_darwin(mock_pf_get_dev, mock_ioctl, mock_pfctl):
     method.restore_firewall(1025, AF_INET, False, None)
     assert mock_ioctl.mock_calls == []
     assert mock_pfctl.mock_calls == [
-        call('-a sshuttle-1025 -F all'),
+        call('-a tshuttle-1025 -F all'),
         call("-X abcdefg"),
     ]
     mock_pf_get_dev.reset_mock()
@@ -278,12 +278,12 @@ def test_setup_firewall_darwin(mock_pf_get_dev, mock_ioctl, mock_pfctl):
     mock_ioctl.reset_mock()
 
 
-@patch('sshuttle.helpers.verbose', new=3)
-@patch('sshuttle.methods.pf.pf', FreeBsd())
+@patch('tshuttle.helpers.verbose', new=3)
+@patch('tshuttle.methods.pf.pf', FreeBsd())
 @patch('subprocess.call')
-@patch('sshuttle.methods.pf.pfctl')
-@patch('sshuttle.methods.pf.ioctl')
-@patch('sshuttle.methods.pf.pf_get_dev')
+@patch('tshuttle.methods.pf.pfctl')
+@patch('tshuttle.methods.pf.ioctl')
+@patch('tshuttle.methods.pf.pf_get_dev')
 def test_setup_firewall_freebsd(mock_pf_get_dev, mock_ioctl, mock_pfctl,
                                 mock_subprocess_call):
     mock_pfctl.side_effect = pfctl
@@ -302,7 +302,7 @@ def test_setup_firewall_freebsd(mock_pf_get_dev, mock_ioctl, mock_pfctl,
 
     assert mock_pfctl.mock_calls == [
         call('-s all'),
-        call('-a sshuttle6-1024 -f /dev/stdin',
+        call('-a tshuttle6-1024 -f /dev/stdin',
              b'table <dns_servers> {2404:6800:4004:80c::33}\n'
              b'rdr pass on lo0 inet6 proto tcp from ! ::1 to '
              b'2404:6800:4004:80c::/64 port 8000:9000 -> ::1 port 1024\n'
@@ -354,7 +354,7 @@ def test_setup_firewall_freebsd(mock_pf_get_dev, mock_ioctl, mock_pfctl,
     ]
     assert mock_pfctl.mock_calls == [
         call('-s all'),
-        call('-a sshuttle-1025 -f /dev/stdin',
+        call('-a tshuttle-1025 -f /dev/stdin',
              b'table <dns_servers> {1.2.3.33}\n'
              b'rdr pass on lo0 inet proto tcp from ! 127.0.0.1 '
              b'to 1.2.3.0/24 -> 127.0.0.1 port 1025\n'
@@ -374,8 +374,8 @@ def test_setup_firewall_freebsd(mock_pf_get_dev, mock_ioctl, mock_pfctl,
     method.restore_firewall(1024, AF_INET6, False, None)
     assert mock_ioctl.mock_calls == []
     assert mock_pfctl.mock_calls == [
-        call('-a sshuttle-1025 -F all'),
-        call('-a sshuttle6-1024 -F all'),
+        call('-a tshuttle-1025 -F all'),
+        call('-a tshuttle6-1024 -F all'),
         call("-d"),
     ]
     mock_pf_get_dev.reset_mock()
@@ -383,11 +383,11 @@ def test_setup_firewall_freebsd(mock_pf_get_dev, mock_ioctl, mock_pfctl,
     mock_ioctl.reset_mock()
 
 
-@patch('sshuttle.helpers.verbose', new=3)
-@patch('sshuttle.methods.pf.pf', OpenBsd())
-@patch('sshuttle.methods.pf.pfctl')
-@patch('sshuttle.methods.pf.ioctl')
-@patch('sshuttle.methods.pf.pf_get_dev')
+@patch('tshuttle.helpers.verbose', new=3)
+@patch('tshuttle.methods.pf.pf', OpenBsd())
+@patch('tshuttle.methods.pf.pfctl')
+@patch('tshuttle.methods.pf.ioctl')
+@patch('tshuttle.methods.pf.pf_get_dev')
 def test_setup_firewall_openbsd(mock_pf_get_dev, mock_ioctl, mock_pfctl):
     mock_pfctl.side_effect = pfctl
 
@@ -411,7 +411,7 @@ def test_setup_firewall_openbsd(mock_pf_get_dev, mock_ioctl, mock_pfctl):
         call('-s Interfaces -i lo -v'),
         call('-f /dev/stdin', b'match on lo\n'),
         call('-s all'),
-        call('-a sshuttle6-1024 -f /dev/stdin',
+        call('-a tshuttle6-1024 -f /dev/stdin',
              b'table <dns_servers> {2404:6800:4004:80c::33}\n'
              b'pass in on lo0 inet6 proto tcp to 2404:6800:4004:80c::/64 '
              b'port 8000:9000 divert-to ::1 port 1024\n'
@@ -459,7 +459,7 @@ def test_setup_firewall_openbsd(mock_pf_get_dev, mock_ioctl, mock_pfctl):
         call('-s Interfaces -i lo -v'),
         call('-f /dev/stdin', b'match on lo\n'),
         call('-s all'),
-        call('-a sshuttle-1025 -f /dev/stdin',
+        call('-a tshuttle-1025 -f /dev/stdin',
              b'table <dns_servers> {1.2.3.33}\n'
              b'pass in on lo0 inet proto tcp to 1.2.3.0/24 divert-to '
              b'127.0.0.1 port 1025\n'
@@ -479,8 +479,8 @@ def test_setup_firewall_openbsd(mock_pf_get_dev, mock_ioctl, mock_pfctl):
     method.restore_firewall(1024, AF_INET6, False, None)
     assert mock_ioctl.mock_calls == []
     assert mock_pfctl.mock_calls == [
-        call('-a sshuttle-1025 -F all'),
-        call('-a sshuttle6-1024 -F all'),
+        call('-a tshuttle-1025 -F all'),
+        call('-a tshuttle6-1024 -F all'),
         call('-d'),
     ]
     mock_pf_get_dev.reset_mock()

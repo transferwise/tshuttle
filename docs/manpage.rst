@@ -1,32 +1,32 @@
-sshuttle
+tshuttle
 ========
 
 
 Synopsis
 --------
-**sshuttle** [*options*] [**-r** *[username@]sshserver[:port]*] \<*subnets* ...\>
+**tshuttle** [*options*] [**-r** *[username@]sshserver[:port]*] \<*subnets* ...\>
 
 
 Description
 -----------
-:program:`sshuttle` allows you to create a VPN connection from your
+:program:`tshuttle` allows you to create a VPN connection from your
 machine to any remote server that you can connect to via
 ssh, as long as that server has python 3.6 or higher.
 
 To work, you must have root access on the local machine,
 but you can have a normal account on the server.
 
-It's valid to run :program:`sshuttle` more than once simultaneously on
+It's valid to run :program:`tshuttle` more than once simultaneously on
 a single client machine, connecting to a different server
 every time, so you can be on more than one VPN at once.
 
-If run on a router, :program:`sshuttle` can forward traffic for your
+If run on a router, :program:`tshuttle` can forward traffic for your
 entire subnet to the VPN.
 
 
 Options
 -------
-.. program:: sshuttle
+.. program:: tshuttle
 
 .. option:: <subnets>
 
@@ -50,23 +50,23 @@ Options
 
 .. option:: --method <auto|nat|nft|tproxy|pf|ipfw>
 
-   Which firewall method should sshuttle use? For auto, sshuttle attempts to
+   Which firewall method should tshuttle use? For auto, tshuttle attempts to
    guess the appropriate method depending on what it can find in PATH. The
    default value is auto.
 
 .. option:: -l <[ip:]port>, --listen=<[ip:]port>
 
     Use this ip address and port number as the transparent
-    proxy port.  By default :program:`sshuttle` finds an available
+    proxy port.  By default :program:`tshuttle` finds an available
     port automatically and listens on IP 127.0.0.1
     (localhost), so you don't need to override it, and
     connections are only proxied from the local machine,
     not from outside machines.  If you want to accept
     connections from other machines on your network (ie. to
-    run :program:`sshuttle` on a router) try enabling IP Forwarding in
+    run :program:`tshuttle` on a router) try enabling IP Forwarding in
     your kernel, then using ``--listen 0.0.0.0:0``.
     You can use any name resolving to an IP address of the machine running
-    :program:`sshuttle`, e.g. ``--listen localhost``.
+    :program:`tshuttle`, e.g. ``--listen localhost``.
 
     For the nft, tproxy and pf methods this can be an IPv6 address. Use 
     this option with comma separated values if required, to provide both 
@@ -80,10 +80,10 @@ Options
     (/etc/resolv.conf) settings, for several reasons.  First,
     hostnames are added without domain names attached, so
     you can ``ssh thatserver`` without worrying if your local
-    domain matches the remote one.  Second, if you :program:`sshuttle`
+    domain matches the remote one.  Second, if you :program:`tshuttle`
     into more than one VPN at a time, it's impossible to
     use more than one DNS server at once anyway, but
-    :program:`sshuttle` correctly merges /etc/hosts entries between
+    :program:`tshuttle` correctly merges /etc/hosts entries between
     all running copies.  Third, if you're only routing a
     few subnets over the VPN, you probably would prefer to
     keep using your local DNS server for everything else.
@@ -125,7 +125,7 @@ Options
 .. option:: --to-ns=<server>
 
     The DNS to forward requests to when remote DNS
-    resolution is enabled. If not given, sshuttle will
+    resolution is enabled. If not given, tshuttle will
     simply resolve using the system configured resolver on
     the remote side (via /etc/resolv.conf on the remote
     side).
@@ -161,7 +161,7 @@ Options
 
     Print more information about the session.  This option
     can be used more than once for increased verbosity.  By
-    default, :program:`sshuttle` prints only error messages.
+    default, :program:`tshuttle` prints only error messages.
 
 .. option:: -e, --ssh-cmd
 
@@ -189,13 +189,13 @@ Options
     uses really big socket buffers, which can overload the
     connection if you start doing large file transfers,
     thus making all your other sessions inside the same
-    tunnel go slowly. Normally, :program:`sshuttle` tries to avoid
+    tunnel go slowly. Normally, :program:`tshuttle` tries to avoid
     this problem using a "fullness check" that allows only
     a certain amount of outstanding data to be buffered at
     a time.  But on high-bandwidth links, this can leave a
     lot of your bandwidth underutilized.  It also makes
-    :program:`sshuttle` seem slow in bandwidth benchmarks (benchmarks
-    rarely test ping latency, which is what :program:`sshuttle` is
+    :program:`tshuttle` seem slow in bandwidth benchmarks (benchmarks
+    rarely test ping latency, which is what :program:`tshuttle` is
     trying to control).  This option disables the latency
     control feature, maximizing bandwidth usage.  Use at
     your own risk.
@@ -225,8 +225,8 @@ Options
 
 .. option:: --pidfile=<pidfilename>
 
-    when using :option:`--daemon`, save :program:`sshuttle`'s pid to
-    *pidfilename*.  The default is ``sshuttle.pid`` in the
+    when using :option:`--daemon`, save :program:`tshuttle`'s pid to
+    *pidfilename*.  The default is ``tshuttle.pid`` in the
     current directory.
 
 .. option:: --disable-ipv6
@@ -237,10 +237,10 @@ Options
 .. option:: --firewall
 
     (internal use only) run the firewall manager.  This is
-    the only part of :program:`sshuttle` that must run as root.  If
-    you start :program:`sshuttle` as a non-root user, it will
+    the only part of :program:`tshuttle` that must run as root.  If
+    you start :program:`tshuttle` as a non-root user, it will
     automatically run ``sudo`` or ``su`` to start the firewall
-    manager, but the core of :program:`sshuttle` still runs as a
+    manager, but the core of :program:`tshuttle` still runs as a
     normal user.
 
 .. option:: --hostwatch
@@ -253,14 +253,14 @@ Options
 
 .. option:: --sudoers
 
-    sshuttle will auto generate the proper sudoers.d config file and add it.
-    Once this is completed, sshuttle will exit and tell the user if
+    tshuttle will auto generate the proper sudoers.d config file and add it.
+    Once this is completed, tshuttle will exit and tell the user if
     it succeed or not. Do not call this options with sudo, it may generate a
     incorrect config file.
 
 .. option:: --sudoers-no-modify
 
-    sshuttle will auto generate the proper sudoers.d config and print it to
+    tshuttle will auto generate the proper sudoers.d config and print it to
     stdout. The option will not modify the system at all.
 
 .. option:: --sudoers-user
@@ -272,7 +272,7 @@ Options
 .. option:: --sudoers-filename
 
     Set the file name for the sudoers.d file to be added. Default is
-    "sshuttle_auto". Only works with --sudoers.
+    "tshuttle_auto". Only works with --sudoers.
 
 .. option:: -t, --tmark
 
@@ -288,11 +288,11 @@ Configuration File
 All the options described above can optionally be specified in a configuration
 file.
 
-To run :program:`sshuttle` with options defined in, e.g., `/etc/sshuttle.conf`
+To run :program:`tshuttle` with options defined in, e.g., `/etc/tshuttle.conf`
 just pass the path to the file preceded by the `@` character, e.g.
-`@/etc/sshuttle.conf`.
+`@/etc/tshuttle.conf`.
 
-When running :program:`sshuttle` with options defined in a configuration file,
+When running :program:`tshuttle` with options defined in a configuration file,
 options can still be passed via the command line in addition to what is
 defined in the file. If a given option is defined both in the file and in
 the command line, the value in the command line will take precedence.
@@ -310,9 +310,9 @@ Examples
 --------
 Test locally by proxying all local connections, without using ssh::
 
-    $ sshuttle -v 0/0
+    $ tshuttle -v 0/0
 
-    Starting sshuttle proxy.
+    Starting tshuttle proxy.
     Listening on ('0.0.0.0', 12300).
     [local sudo] Password:
     firewall manager ready.
@@ -334,9 +334,9 @@ Test locally by proxying all local connections, without using ssh::
 Test connection to a remote server, with automatic hostname
 and subnet guessing::
 
-    $ sshuttle -vNHr example.org
+    $ tshuttle -vNHr example.org
 
-    Starting sshuttle proxy.
+    Starting tshuttle proxy.
     Listening on ('0.0.0.0', 12300).
     firewall manager ready.
     c : connecting to server...
@@ -354,17 +354,17 @@ and subnet guessing::
     c : Keyboard interrupt: exiting.
     c : SW#6:192.168.42.121:60554: deleting
 
-Run :program:`sshuttle` with a `/etc/sshuttle.conf` configuration file::
+Run :program:`tshuttle` with a `/etc/tshuttle.conf` configuration file::
 
-    $ sshuttle @/etc/sshuttle.conf
+    $ tshuttle @/etc/tshuttle.conf
 
-Use the options defined in `/etc/sshuttle.conf` but be more verbose::
+Use the options defined in `/etc/tshuttle.conf` but be more verbose::
 
-    $ sshuttle @/etc/sshuttle.conf -vvv
+    $ tshuttle @/etc/tshuttle.conf -vvv
 
-Override the remote server defined in `/etc/sshuttle.conf`::
+Override the remote server defined in `/etc/tshuttle.conf`::
 
-    $ sshuttle @/etc/sshuttle.conf -r otheruser@test.example.com
+    $ tshuttle @/etc/tshuttle.conf -r otheruser@test.example.com
 
 Example configuration file::
 
@@ -375,18 +375,18 @@ Example configuration file::
 
 Discussion
 ----------
-When it starts, :program:`sshuttle` creates an ssh session to the
+When it starts, :program:`tshuttle` creates an ssh session to the
 server specified by the ``-r`` option.  If ``-r`` is omitted,
 it will start both its client and server locally, which is
 sometimes useful for testing.
 
-After connecting to the remote server, :program:`sshuttle` uploads its
+After connecting to the remote server, :program:`tshuttle` uploads its
 (python) source code to the remote end and executes it
-there.  Thus, you don't need to install :program:`sshuttle` on the
-remote server, and there are never :program:`sshuttle` version
+there.  Thus, you don't need to install :program:`tshuttle` on the
+remote server, and there are never :program:`tshuttle` version
 conflicts between client and server.
 
-Unlike most VPNs, :program:`sshuttle` forwards sessions, not packets.
+Unlike most VPNs, :program:`tshuttle` forwards sessions, not packets.
 That is, it uses kernel transparent proxying (`iptables
 REDIRECT` rules on Linux) to
 capture outgoing TCP sessions, then creates entirely
@@ -407,7 +407,7 @@ tcp-based encrypted streams like ssh or ssl, and have to
 implement their own encryption from scratch, which is very
 complex and error prone.
 
-:program:`sshuttle`'s simplicity comes from the fact that it can
+:program:`tshuttle`'s simplicity comes from the fact that it can
 safely use the existing ssh encrypted tunnel without
 incurring a performance penalty.  It does this by letting
 the client-side kernel manage the incoming tcp stream, and

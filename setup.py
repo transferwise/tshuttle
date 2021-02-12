@@ -2,20 +2,20 @@
 
 # Copyright 2012-2014 Brian May
 #
-# This file is part of sshuttle.
+# This file is part of tshuttle.
 #
-# sshuttle is free software: you can redistribute it and/or modify
+# tshuttle is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Lesser General Public License as
 # published by the Free Software Foundation; either version 2.1 of
 # the License, or (at your option) any later version.
 #
-# sshuttle is distributed in the hope that it will be useful,
+# tshuttle is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU Lesser General Public License for more details.
 #
 # You should have received a copy of the GNU Lesser General Public License
-# along with sshuttle; If not, see <http://www.gnu.org/licenses/>.
+# along with tshuttle; If not, see <http://www.gnu.org/licenses/>.
 
 from setuptools import setup, find_packages
 
@@ -27,14 +27,14 @@ def version_scheme(version):
 
 
 setup(
-    name="sshuttle",
+    name="tshuttle",
     use_scm_version={
-        'write_to': "sshuttle/version.py",
+        'write_to': "tshuttle/version.py",
         'version_scheme': version_scheme,
     },
     setup_requires=['setuptools_scm'],
     # version=version,
-    url='https://github.com/sshuttle/sshuttle',
+    url='https://github.com/tshuttle/tshuttle',
     author='Brian May',
     author_email='brian@linuxpenguins.xyz',
     description='Full-featured" VPN over an SSH tunnel',
@@ -58,7 +58,7 @@ setup(
     scripts=['bin/sudoers-add'],
     entry_points={
         'console_scripts': [
-            'sshuttle = sshuttle.cmdline:main',
+            'tshuttle = tshuttle.cmdline:main',
         ],
     },
     python_requires='>=3.6',

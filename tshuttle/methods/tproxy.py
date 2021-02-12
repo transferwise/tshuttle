@@ -1,9 +1,9 @@
 import struct
-from sshuttle.firewall import subnet_weight
-from sshuttle.helpers import family_to_string
-from sshuttle.linux import ipt, ipt_ttl, ipt_chain_exists
-from sshuttle.methods import BaseMethod
-from sshuttle.helpers import debug1, debug2, debug3, Fatal, which
+from tshuttle.firewall import subnet_weight
+from tshuttle.helpers import family_to_string
+from tshuttle.linux import ipt, ipt_ttl, ipt_chain_exists
+from tshuttle.methods import BaseMethod
+from tshuttle.helpers import debug1, debug2, debug3, Fatal, which
 
 recvmsg = None
 try:
@@ -179,9 +179,9 @@ class Method(BaseMethod):
             return proto + ('--dport', '%d:%d' % (fport, lport)) \
                     if fport else proto
 
-        mark_chain = 'sshuttle-m-%s' % port
-        tproxy_chain = 'sshuttle-t-%s' % port
-        divert_chain = 'sshuttle-d-%s' % port
+        mark_chain = 'tshuttle-m-%s' % port
+        tproxy_chain = 'tshuttle-t-%s' % port
+        divert_chain = 'tshuttle-d-%s' % port
 
         # basic cleanup/setup of chains
         self.restore_firewall(port, family, udp, user)
@@ -199,12 +199,12 @@ class Method(BaseMethod):
         # through the tproxy or mark chains.
         #
         # Without this fix, if a large subnet is redirected through
-        # sshuttle (i.e., 0/0), then the user may be unable to receive
+        # tshuttle (i.e., 0/0), then the user may be unable to receive
         # UDP responses or connect to their own machine using an IP
         # besides (127.0.0.1). Prior to including these lines, the
         # documentation reminded the user to use -x to exclude their
         # own IP addresses to receive UDP responses if they are
-        # redirecting a large subnet through sshuttle (i.e., 0/0).
+        # redirecting a large subnet through tshuttle (i.e., 0/0).
         _ipt('-A', tproxy_chain, '-j', 'RETURN', '-m', 'addrtype',
              '--dst-type', 'LOCAL')
         _ipt('-A', mark_chain, '-j', 'RETURN', '-m', 'addrtype',
@@ -292,9 +292,9 @@ class Method(BaseMethod):
         def _ipt_ttl(*args):
             return ipt_ttl(family, table, *args)
 
-        mark_chain = 'sshuttle-m-%s' % port
-        tproxy_chain = 'sshuttle-t-%s' % port
-        divert_chain = 'sshuttle-d-%s' % port
+        mark_chain = 'tshuttle-m-%s' % port
+        tproxy_chain = 'tshuttle-t-%s' % port
+        divert_chain = 'tshuttle-d-%s' % port
 
         # basic cleanup/setup of chains
         if ipt_chain_exists(family, table, mark_chain):

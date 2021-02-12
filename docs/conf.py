@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# sshuttle documentation build configuration file, created by
+# tshuttle documentation build configuration file, created by
 # sphinx-quickstart on Sun Jan 17 12:13:47 2016.
 #
 # This file is execfile()d with the current directory set to its
@@ -16,7 +16,7 @@
 import sys
 import os
 sys.path.insert(0, os.path.abspath('..'))
-import sshuttle.version  # NOQA
+import tshuttle.version  # NOQA
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -48,7 +48,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = 'sshuttle'
+project = 'tshuttle'
 copyright = '2016, Brian May'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -56,7 +56,7 @@ copyright = '2016, Brian May'
 # built documents.
 #
 # The full version, including alpha/beta/rc tags.
-release = sshuttle.version.version
+release = tshuttle.version.version
 # The short X.Y version.
 version = '.'.join(release.split('.')[:2])
 
@@ -181,7 +181,7 @@ html_static_path = ['_static']
 # html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'sshuttledoc'
+htmlhelp_basename = 'tshuttledoc'
 
 
 # -- Options for LaTeX output ---------------------------------------------
@@ -201,7 +201,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    ('index', 'sshuttle.tex', 'sshuttle documentation', 'Brian May', 'manual'),
+    ('index', 'tshuttle.tex', 'tshuttle documentation', 'Brian May', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -230,7 +230,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('manpage', 'sshuttle', 'sshuttle documentation', ['Brian May'], 1)
+    ('manpage', 'tshuttle', 'tshuttle documentation', ['Brian May'], 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -243,8 +243,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    ('index', 'sshuttle', 'sshuttle documentation',
-     'Brian May', 'sshuttle', 'A transparent proxy-based VPN using ssh',
+    ('index', 'tshuttle', 'tshuttle documentation',
+     'Brian May', 'tshuttle', 'A transparent proxy-based VPN using ssh',
      'Miscellaneous'),
 ]
 

@@ -1,14 +1,14 @@
 import socket
-from sshuttle.firewall import subnet_weight
-from sshuttle.linux import nft, nonfatal
-from sshuttle.methods import BaseMethod
-from sshuttle.helpers import debug2, which
+from tshuttle.firewall import subnet_weight
+from tshuttle.linux import nft, nonfatal
+from tshuttle.methods import BaseMethod
+from tshuttle.helpers import debug2, which
 
 
 class Method(BaseMethod):
 
     # We name the chain based on the transproxy port number so that it's
-    # possible to run multiple copies of sshuttle at the same time.  Of course,
+    # possible to run multiple copies of tshuttle at the same time.  Of course,
     # the multiple copies shouldn't have overlapping subnets, or only the most-
     # recently-started one will win (because we use "-I OUTPUT 1" instead of
     # "-A OUTPUT").
@@ -18,9 +18,9 @@ class Method(BaseMethod):
             raise Exception("UDP not supported by nft")
 
         if family == socket.AF_INET:
-            table = 'sshuttle-ipv4-%s' % port
+            table = 'tshuttle-ipv4-%s' % port
         if family == socket.AF_INET6:
-            table = 'sshuttle-ipv6-%s' % port
+            table = 'tshuttle-ipv6-%s' % port
 
         def _nft(action, *args):
             return nft(family, table, action, *args)
@@ -46,7 +46,7 @@ class Method(BaseMethod):
             _nft('add rule', chain, 'meta', 'nfproto', '!=', 'ipv6', 'return')
 
         # This TTL hack allows the client and server to run on the
-        # same host. The connections the sshuttle server makes will
+        # same host. The connections the tshuttle server makes will
         # have TTL set to 63.
         if family == socket.AF_INET:
             _nft('add rule', chain, 'ip ttl == 63 return')
@@ -62,13 +62,13 @@ class Method(BaseMethod):
             ip_version = 'ip6'
 
         # Redirect DNS traffic as requested. This includes routing traffic
-        # to localhost DNS servers through sshuttle.
+        # to localhost DNS servers through tshuttle.
         for _, ip in [i for i in nslist if i[0] == family]:
             _nft('add rule', chain, ip_version,
                  'daddr %s' % ip, 'udp dport 53',
                  ('redirect to :' + str(dnsport)))
 
-        # Don't route any remaining local traffic through sshuttle
+        # Don't route any remaining local traffic through tshuttle
         _nft('add rule', chain, 'fib daddr type local return')
 
         # create new subnet entries.
@@ -100,9 +100,9 @@ class Method(BaseMethod):
             raise Exception("UDP not supported by nft method_name")
 
         if family == socket.AF_INET:
-            table = 'sshuttle-ipv4-%s' % port
+            table = 'tshuttle-ipv4-%s' % port
         if family == socket.AF_INET6:
-            table = 'sshuttle-ipv6-%s' % port
+            table = 'tshuttle-ipv6-%s' % port
 
         def _nft(action, *args):
             return nft(family, table, action, *args)

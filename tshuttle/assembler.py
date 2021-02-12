@@ -35,11 +35,11 @@ sys.stdout.flush()
 
 # import can only happen once the code has been transferred to
 # the server. 'noqa: E402' excludes these lines from QA checks.
-import sshuttle.helpers  # noqa: E402
-sshuttle.helpers.verbose = verbosity
+import tshuttle.helpers  # noqa: E402
+tshuttle.helpers.verbose = verbosity
 
-import sshuttle.cmdline_options as options  # noqa: E402
-from sshuttle.server import main  # noqa: E402
+import tshuttle.cmdline_options as options  # noqa: E402
+from tshuttle.server import main  # noqa: E402
 main(options.latency_control, options.latency_buffer_size,
      options.auto_hosts, options.to_nameserver,
      options.auto_nets)

@@ -6,7 +6,7 @@ import select
 import os
 import fcntl
 
-from sshuttle.helpers import b, log, debug1, debug2, debug3, Fatal
+from tshuttle.helpers import b, log, debug1, debug2, debug3, Fatal
 
 MAX_CHANNEL = 65535
 LATENCY_BUFFER_SIZE = 32768

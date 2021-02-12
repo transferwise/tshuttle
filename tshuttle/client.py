@@ -8,16 +8,16 @@ import sys
 import platform
 import psutil
 
-import sshuttle.helpers as helpers
-import sshuttle.ssnet as ssnet
-import sshuttle.ssh as ssh
-import sshuttle.ssyslog as ssyslog
-import sshuttle.sdnotify as sdnotify
-from sshuttle.ssnet import SockWrapper, Handler, Proxy, Mux, MuxWrapper
-from sshuttle.helpers import log, debug1, debug2, debug3, Fatal, islocal, \
+import tshuttle.helpers as helpers
+import tshuttle.ssnet as ssnet
+import tshuttle.ssh as ssh
+import tshuttle.ssyslog as ssyslog
+import tshuttle.sdnotify as sdnotify
+from tshuttle.ssnet import SockWrapper, Handler, Proxy, Mux, MuxWrapper
+from tshuttle.helpers import log, debug1, debug2, debug3, Fatal, islocal, \
     resolvconf_nameservers, which
-from sshuttle.methods import get_method, Features
-from sshuttle import __version__
+from tshuttle.methods import get_method, Features
+from tshuttle import __version__
 try:
     from pwd import getpwnam
 except ImportError:
@@ -75,7 +75,7 @@ def check_daemon(pidfile):
             pass
         else:
             raise
-    raise Fatal("%s: sshuttle is already running (pid=%d)"
+    raise Fatal("%s: tshuttle is already running (pid=%d)"
                 % (_pidname, oldpid))
 
 
@@ -494,15 +494,15 @@ def _main(tcp_listener, udp_listener, fw, ssh_cmd, remotename,
         # Our fatal exceptions return exit code 99
         if rv == 99:
             errmsg += "This error code likely means that python started and " \
-                "the sshuttle server started. However, the sshuttle server " \
+                "the tshuttle server started. However, the tshuttle server " \
                 "may have raised a 'Fatal' exception after it started."
         elif rv == 98:
             errmsg += "This error code likely means that we were able to " \
                 "run python on the server, but that the program continued " \
                 "to the line after we call python's exec() to execute " \
-                "sshuttle's server code. Try specifying the python " \
+                "tshuttle's server code. Try specifying the python " \
                 "executable to user on the server by passing --python " \
-                "to sshuttle."
+                "to tshuttle."
 
         # This error should only be possible when --python is not specified.
         elif rv == 97 and not python:
@@ -511,7 +511,7 @@ def _main(tcp_listener, udp_listener, fw, ssh_cmd, remotename,
                 "server or that we do not have permission to run 'exec' in " \
                 "the /bin/sh shell on the server. Try specifying the " \
                 "python executable to use on the server by passing " \
-                "--python to sshuttle."
+                "--python to tshuttle."
 
         # POSIX sh standards says error code 127 is used when you try
         # to execute a program that does not exist. See section 2.8.2
@@ -529,14 +529,14 @@ def _main(tcp_listener, udp_listener, fw, ssh_cmd, remotename,
                         "just the name of the python executable. However, " \
                         "if python is not in your PATH and you cannot " \
                         "run programs specified with an absolute path, " \
-                        "it is possible that sshuttle will not work."
+                        "it is possible that tshuttle will not work."
             else:
                 errmsg += "This error code likely means that we were unable " \
                     "to execute /bin/sh on the remote server. This can " \
                     "happen if /bin/sh does not exist on the server or if " \
                     "you are in a restricted shell that does not allow you " \
                     "to run programs specified with an absolute path. " \
-                    "Try rerunning sshuttle with the --python parameter."
+                    "Try rerunning tshuttle with the --python parameter."
 
         # When the redirected subnet includes the remote ssh host, the
         # firewall rules can interrupt the ssh connection to the
@@ -549,17 +549,17 @@ def _main(tcp_listener, udp_listener, fw, ssh_cmd, remotename,
         #
         # There are many github issues from users encountering this
         # problem. Most of the discussion on the topic is here:
-        # https://github.com/sshuttle/sshuttle/issues/191
+        # https://github.com/tshuttle/tshuttle/issues/191
         elif rv == 255:
             errmsg += "It might be possible to resolve this error by " \
                 "excluding the server that you are ssh'ing to. For example, " \
-                "if you are running 'sshuttle -v -r example.com 0/0' to " \
+                "if you are running 'tshuttle -v -r example.com 0/0' to " \
                 "redirect all traffic through example.com, then try " \
-                "'sshuttle -v -r example.com -x example.com 0/0' to " \
+                "'tshuttle -v -r example.com -x example.com 0/0' to " \
                 "exclude redirecting the connection to example.com itself " \
-                "(i.e., sshuttle's firewall rules may be breaking the " \
+                "(i.e., tshuttle's firewall rules may be breaking the " \
                 "ssh connection that it previously established). " \
-                "Alternatively, you may be able to use 'sshuttle -v -r " \
+                "Alternatively, you may be able to use 'tshuttle -v -r " \
                 "example.com -x example.com:22 0/0' to redirect " \
                 "everything except ssh connections between your machine " \
                 "and example.com."
@@ -668,7 +668,7 @@ def main(listenip_v6, listenip_v4,
         except Fatal as e:
             log("%s" % e)
             return 5
-    debug1('Starting sshuttle proxy (version %s).' % __version__)
+    debug1('Starting tshuttle proxy (version %s).' % __version__)
     helpers.logprefix = 'c : '
 
     fw = FirewallClient(method_name, sudo_pythonpath)
@@ -754,7 +754,7 @@ def main(listenip_v6, listenip_v4,
 
     if not required.ipv6 and len(subnets_v6) > 0:
         print("WARNING: IPv6 subnets were ignored because IPv6 is disabled "
-              "in sshuttle.")
+              "in tshuttle.")
         subnets_v6 = []
         subnets_include = subnets_v4
 
@@ -765,15 +765,15 @@ def main(listenip_v6, listenip_v4,
     if required.dns:
         if not required.ipv6 and len(nslist_v6) > 0:
             print("WARNING: Your system is configured to use an IPv6 DNS "
-                  "server but sshuttle is not using IPv6. Therefore DNS "
+                  "server but tshuttle is not using IPv6. Therefore DNS "
                   "traffic your system sends to the IPv6 DNS server won't "
-                  "be redirected via sshuttle to the remote machine.")
+                  "be redirected via tshuttle to the remote machine.")
             nslist_v6 = []
             nslist = nslist_v4
 
         if len(nslist) == 0:
             raise Fatal("Can't redirect DNS traffic since IPv6 is not "
-                        "enabled in sshuttle and all of the system DNS "
+                        "enabled in tshuttle and all of the system DNS "
                         "servers are IPv6.")
 
     # If we aren't using IPv6, we can safely ignore excluded IPv6 subnets.

@@ -1,4 +1,4 @@
-from sshuttle.ssh import parse_hostport
+from tshuttle.ssh import parse_hostport
 
 
 def test_host_only():

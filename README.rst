@@ -1,7 +1,7 @@
 tshuttle: where transparent proxy meets VPN meets ssh
 =====================================================
 
-As far as I know, tshuttle is the only program that solves the following
+tshuttle is the only program that solves the following
 common case:
 
 - Your client machine (or router) is Linux, FreeBSD, or MacOS.
@@ -11,10 +11,10 @@ common case:
 - You don't want to create an ssh port forward for every
   single host/port on the remote network.
 
-## NOTE THAT THIS IS A FORK OF SSHUTTLE TO ENABLE IT TO WORK WITH TELEPORT. WE ARE RENAMING IT TO TSHUTTLE
-the "real" repo is here: https://github.com/sshuttle/sshuttle
+**Note that this is a fork of sshuttle to enable it to work with teleport. we are renaming it to tshuttle.
+The real repo is here: https://github.com/sshuttle/sshuttle**
 
-Obtaining sshuttle
+Obtaining tshuttle
 ------------------
 
 - Homebrew::
@@ -26,15 +26,10 @@ It is possible to install into a virtualenv as a non-root user.
 - Clone::
 
       virtualenv -p python3 /tmp/tshuttle
-      . /tmp/sshuttle/bin/activate
+      . /tmp/tshuttle/bin/activate
       git clone git@github.com:transferwise/tshuttle.git
-      cd sshuttle
+      cd tshuttle
       ./setup.py install
-
-- Homebrew::
-
-      brew install sshuttle
-
 
 Documentation
 -------------

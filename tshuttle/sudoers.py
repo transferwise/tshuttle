@@ -3,10 +3,10 @@ import sys
 import getpass
 from uuid import uuid4
 from subprocess import Popen, PIPE
-from sshuttle.helpers import log, debug1
+from tshuttle.helpers import log, debug1
 from distutils import spawn
 
-path_to_sshuttle = sys.argv[0]
+path_to_tshuttle = sys.argv[0]
 path_to_dist_packages = os.path.dirname(os.path.abspath(__file__))[:-9]
 
 # randomize command alias to avoid collisions
@@ -25,7 +25,7 @@ def build_config(user_name):
         'ca': command_alias,
         'dist_packages': path_to_dist_packages,
         'py': sys.executable,
-        'path': path_to_sshuttle,
+        'path': path_to_tshuttle,
         'user_name': user_name,
     }
 

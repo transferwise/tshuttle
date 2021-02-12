@@ -1,14 +1,14 @@
 import socket
-from sshuttle.firewall import subnet_weight
-from sshuttle.helpers import family_to_string, which, debug2
-from sshuttle.linux import ipt, ipt_ttl, ipt_chain_exists, nonfatal
-from sshuttle.methods import BaseMethod
+from tshuttle.firewall import subnet_weight
+from tshuttle.helpers import family_to_string, which, debug2
+from tshuttle.linux import ipt, ipt_ttl, ipt_chain_exists, nonfatal
+from tshuttle.methods import BaseMethod
 
 
 class Method(BaseMethod):
 
     # We name the chain based on the transproxy port number so that it's
-    # possible to run multiple copies of sshuttle at the same time.  Of course,
+    # possible to run multiple copies of tshuttle at the same time.  Of course,
     # the multiple copies shouldn't have overlapping subnets, or only the most-
     # recently-started one will win (because we use "-I OUTPUT 1" instead of
     # "-A OUTPUT").
@@ -33,7 +33,7 @@ class Method(BaseMethod):
         def _ipm(*args):
             return ipt(family, "mangle", *args)
 
-        chain = 'sshuttle-%s' % port
+        chain = 'tshuttle-%s' % port
 
         # basic cleanup/setup of chains
         self.restore_firewall(port, family, udp, user)
@@ -51,12 +51,12 @@ class Method(BaseMethod):
         _ipt('-I', 'PREROUTING', '1', *args)
 
         # This TTL hack allows the client and server to run on the
-        # same host. The connections the sshuttle server makes will
+        # same host. The connections the tshuttle server makes will
         # have TTL set to 63.
         _ipt_ttl('-A', chain, '-j', 'RETURN',  '-m', 'ttl', '--ttl', '63')
 
         # Redirect DNS traffic as requested. This includes routing traffic
-        # to localhost DNS servers through sshuttle.
+        # to localhost DNS servers through tshuttle.
         for _, ip in [i for i in nslist if i[0] == family]:
             _ipt('-A', chain, '-j', 'REDIRECT',
                  '--dest', '%s/32' % ip,
@@ -64,7 +64,7 @@ class Method(BaseMethod):
                  '--dport', '53',
                  '--to-ports', str(dnsport))
 
-        # Don't route any remaining local traffic through sshuttle.
+        # Don't route any remaining local traffic through tshuttle.
         _ipt('-A', chain, '-j', 'RETURN',
              '-m', 'addrtype',
              '--dst-type', 'LOCAL')
@@ -105,7 +105,7 @@ class Method(BaseMethod):
         def _ipm(*args):
             return ipt(family, "mangle", *args)
 
-        chain = 'sshuttle-%s' % port
+        chain = 'tshuttle-%s' % port
 
         # basic cleanup/setup of chains
         if ipt_chain_exists(family, table, chain):

@@ -1,6 +1,6 @@
 import socket
 import subprocess as ssubprocess
-from sshuttle.helpers import log, debug1, Fatal, family_to_string, get_env
+from tshuttle.helpers import log, debug1, Fatal, family_to_string, get_env
 
 
 def nonfatal(func, *args):

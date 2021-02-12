@@ -21,7 +21,7 @@ professors was working with some graduate students on the technology that would
 eventually become `Slipstream Internet Acceleration
 <http://www.slipstream.com/>`_.  He asked me to do a contract for him to build
 an initial prototype of a transparent proxy server for mobile networks.  The
-idea was similar to sshuttle: if you reassemble and then disassemble the TCP
+idea was similar to tshuttle: if you reassemble and then disassemble the TCP
 packets, you can reduce latency and improve performance vs.  just forwarding
 the packets over a plain VPN or mobile network.  (It's unlikely that any of my
 code has persisted in the Slipstream product today, but the concept is still

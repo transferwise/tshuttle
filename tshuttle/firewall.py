@@ -6,17 +6,17 @@ import os
 import platform
 import traceback
 
-import sshuttle.ssyslog as ssyslog
-import sshuttle.helpers as helpers
-from sshuttle.helpers import debug1, debug2, Fatal
-from sshuttle.methods import get_auto_method, get_method
+import tshuttle.ssyslog as ssyslog
+import tshuttle.helpers as helpers
+from tshuttle.helpers import debug1, debug2, Fatal
+from tshuttle.methods import get_auto_method, get_method
 
 HOSTSFILE = '/etc/hosts'
 
 
 def rewrite_etc_hosts(hostmap, port):
     BAKFILE = '%s.sbak' % HOSTSFILE
-    APPEND = '# sshuttle-firewall-%d AUTOCREATED' % port
+    APPEND = '# tshuttle-firewall-%d AUTOCREATED' % port
     old_content = ''
     st = None
     try:
@@ -67,7 +67,7 @@ def setup_daemon():
     signal.signal(signal.SIGTERM, signal.SIG_IGN)
     signal.signal(signal.SIGINT, signal.SIG_IGN)
 
-    # ctrl-c shouldn't be passed along to me.  When the main sshuttle dies,
+    # ctrl-c shouldn't be passed along to me.  When the main tshuttle dies,
     # I'll die automatically.
     os.setsid()
 
@@ -90,7 +90,7 @@ def subnet_weight(s):
 
 
 # This is some voodoo for setting up the kernel's transparent
-# proxying stuff.  If subnets is empty, we just delete our sshuttle rules;
+# proxying stuff.  If subnets is empty, we just delete our tshuttle rules;
 # otherwise we delete it, then make them from scratch.
 #
 # This code is supposed to clean up after itself by deleting its rules on
@@ -123,7 +123,7 @@ def main(method_name, syslog):
     stdout.flush()
 
     # we wait until we get some input before creating the rules.  That way,
-    # sshuttle can launch us as early as possible (and get sudo password
+    # tshuttle can launch us as early as possible (and get sudo password
     # authentication as early in the startup process as possible).
     line = stdin.readline(128)
     if not line:

@@ -8,12 +8,12 @@ import sys
 import platform
 
 import subprocess as ssubprocess
-import sshuttle.helpers as helpers
-from sshuttle.helpers import log, debug1, debug2, debug3, get_env
+import tshuttle.helpers as helpers
+from tshuttle.helpers import log, debug1, debug2, debug3, get_env
 
 POLL_TIME = 60 * 15
 NETSTAT_POLL_TIME = 30
-CACHEFILE = os.path.expanduser('~/.sshuttle.hosts')
+CACHEFILE = os.path.expanduser('~/.tshuttle.hosts')
 
 
 _nmb_ok = True

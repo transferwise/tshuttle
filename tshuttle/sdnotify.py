@@ -1,7 +1,7 @@
-"""When sshuttle is run via a systemd service file, we can communicate
-to systemd about the status of the sshuttle process. In particular, we
-can send READY status to tell systemd that sshuttle has completed
-startup and send STOPPING to indicate that sshuttle is beginning
+"""When tshuttle is run via a systemd service file, we can communicate
+to systemd about the status of the tshuttle process. In particular, we
+can send READY status to tell systemd that tshuttle has completed
+startup and send STOPPING to indicate that tshuttle is beginning
 shutdown.
 
 For details, see:
@@ -11,7 +11,7 @@ https://www.freedesktop.org/software/systemd/man/sd_notify.html
 import socket
 import os
 
-from sshuttle.helpers import debug1
+from tshuttle.helpers import debug1
 
 
 def _notify(message):
@@ -48,12 +48,12 @@ def send(*messages):
 
 def ready():
     """Constructs a message that is appropriate to send upon completion of
-sshuttle startup."""
+tshuttle startup."""
     return b"READY=1"
 
 
 def stop():
-    """Constructs a message that is appropriate to send when sshuttle is
+    """Constructs a message that is appropriate to send when tshuttle is
 beginning to shutdown."""
     return b"STOPPING=1"
 

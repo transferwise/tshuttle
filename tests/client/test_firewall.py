@@ -2,7 +2,7 @@ import io
 from socket import AF_INET, AF_INET6
 
 from unittest.mock import Mock, patch, call
-import sshuttle.firewall
+import tshuttle.firewall
 
 
 def setup_daemon():
@@ -33,8 +33,8 @@ def test_rewrite_etc_hosts(tmpdir):
         'myhost': '1.2.3.4',
         'myotherhost': '1.2.3.5',
     }
-    with patch('sshuttle.firewall.HOSTSFILE', new=str(new_hosts)):
-        sshuttle.firewall.rewrite_etc_hosts(hostmap, 10)
+    with patch('tshuttle.firewall.HOSTSFILE', new=str(new_hosts)):
+        tshuttle.firewall.rewrite_etc_hosts(hostmap, 10)
 
     with new_hosts.open() as f:
         line = f.readline()
@@ -44,18 +44,18 @@ def test_rewrite_etc_hosts(tmpdir):
         line = f.readline()
         s = line.split()
         assert s == ['1.2.3.4', 'myhost',
-                     '#', 'sshuttle-firewall-10', 'AUTOCREATED']
+                     '#', 'tshuttle-firewall-10', 'AUTOCREATED']
 
         line = f.readline()
         s = line.split()
         assert s == ['1.2.3.5', 'myotherhost',
-                     '#', 'sshuttle-firewall-10', 'AUTOCREATED']
+                     '#', 'tshuttle-firewall-10', 'AUTOCREATED']
 
         line = f.readline()
         assert line == ""
 
-    with patch('sshuttle.firewall.HOSTSFILE', new=str(new_hosts)):
-        sshuttle.firewall.restore_etc_hosts(hostmap, 10)
+    with patch('tshuttle.firewall.HOSTSFILE', new=str(new_hosts)):
+        tshuttle.firewall.restore_etc_hosts(hostmap, 10)
     assert orig_hosts.computehash() == new_hosts.computehash()
 
 
@@ -86,13 +86,13 @@ def test_subnet_weight():
     ]
 
     assert subnets_sorted == sorted(subnets,
-                                    key=sshuttle.firewall.subnet_weight,
+                                    key=tshuttle.firewall.subnet_weight,
                                     reverse=True)
 
 
-@patch('sshuttle.firewall.rewrite_etc_hosts')
-@patch('sshuttle.firewall.setup_daemon')
-@patch('sshuttle.firewall.get_method')
+@patch('tshuttle.firewall.rewrite_etc_hosts')
+@patch('tshuttle.firewall.setup_daemon')
+@patch('tshuttle.firewall.get_method')
 def test_main(mock_get_method, mock_setup_daemon, mock_rewrite_etc_hosts):
     stdin, stdout = setup_daemon()
     mock_setup_daemon.return_value = stdin, stdout
@@ -100,7 +100,7 @@ def test_main(mock_get_method, mock_setup_daemon, mock_rewrite_etc_hosts):
     mock_get_method("not_auto").name = "test"
     mock_get_method.reset_mock()
 
-    sshuttle.firewall.main("not_auto", False)
+    tshuttle.firewall.main("not_auto", False)
 
     assert mock_rewrite_etc_hosts.mock_calls == [
         call({'1.2.3.3': 'existing'}, 1024),

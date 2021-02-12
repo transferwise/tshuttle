@@ -3,16 +3,16 @@ Installation
 
 - From PyPI::
 
-      pip install sshuttle
+      pip install tshuttle
 
 - Debain package manager::
 
-      sudo apt install sshuttle
+      sudo apt install tshuttle
 
 - Clone::
 
-      git clone https://github.com/sshuttle/sshuttle.git
-      cd sshuttle
+      git clone https://github.com/tshuttle/tshuttle.git
+      cd tshuttle
       ./setup.py install
 
 
@@ -21,4 +21,4 @@ Optionally after installation
 
 - Add to sudoers file::
 
-      sshuttle --sudoers
+      tshuttle --sudoers

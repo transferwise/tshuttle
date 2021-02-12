@@ -1,14 +1,14 @@
 import re
 import socket
 import platform
-import sshuttle.helpers as helpers
-import sshuttle.client as client
-import sshuttle.firewall as firewall
-import sshuttle.hostwatch as hostwatch
-import sshuttle.ssyslog as ssyslog
-from sshuttle.options import parser, parse_ipport
-from sshuttle.helpers import family_ip_tuple, log, Fatal
-from sshuttle.sudoers import sudoers
+import tshuttle.helpers as helpers
+import tshuttle.client as client
+import tshuttle.firewall as firewall
+import tshuttle.hostwatch as hostwatch
+import tshuttle.ssyslog as ssyslog
+from tshuttle.options import parser, parse_ipport
+from tshuttle.helpers import family_ip_tuple, log, Fatal
+from tshuttle.sudoers import sudoers
 
 
 def main():
@@ -32,10 +32,10 @@ def main():
     if opt.daemon:
         opt.syslog = 1
     if opt.wrap:
-        import sshuttle.ssnet as ssnet
+        import tshuttle.ssnet as ssnet
         ssnet.MAX_CHANNEL = opt.wrap
     if opt.latency_buffer_size:
-        import sshuttle.ssnet as ssnet
+        import tshuttle.ssnet as ssnet
         ssnet.LATENCY_BUFFER_SIZE = opt.latency_buffer_size
     helpers.verbose = opt.verbose
 

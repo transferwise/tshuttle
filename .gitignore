@@ -1,11 +1,11 @@
-/sshuttle/version.py
+/tshuttle/version.py
 /tmp/
 /.cache/
 /.eggs/
 /.tox/
 /build/
 /dist/
-/sshuttle.egg-info/
+/tshuttle.egg-info/
 /docs/_build/
 *.pyc
 *~

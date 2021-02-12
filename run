@@ -12,4 +12,4 @@ python_best_version() {
   fi
 }
 
-python_best_version -m "sshuttle" "$@"
+python_best_version -m "tshuttle" "$@"

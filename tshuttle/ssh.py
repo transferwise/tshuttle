@@ -11,8 +11,8 @@ from shlex import quote
 import ipaddress
 from urllib.parse import urlparse
 
-import sshuttle.helpers as helpers
-from sshuttle.helpers import debug2, which, get_path, Fatal
+import tshuttle.helpers as helpers
+from tshuttle.helpers import debug2, which, get_path, Fatal
 
 
 def get_module_source(name):
@@ -92,15 +92,15 @@ def connect(ssh_cmd, rhostport, python, stderr, options):
         rhost = host
 
     z = zlib.compressobj(1)
-    content = get_module_source('sshuttle.assembler')
+    content = get_module_source('tshuttle.assembler')
     optdata = ''.join("%s=%r\n" % (k, v) for (k, v) in list(options.items()))
     optdata = optdata.encode("UTF8")
-    content2 = (empackage(z, 'sshuttle') +
-                empackage(z, 'sshuttle.cmdline_options', optdata) +
-                empackage(z, 'sshuttle.helpers') +
-                empackage(z, 'sshuttle.ssnet') +
-                empackage(z, 'sshuttle.hostwatch') +
-                empackage(z, 'sshuttle.server') +
+    content2 = (empackage(z, 'tshuttle') +
+                empackage(z, 'tshuttle.cmdline_options', optdata) +
+                empackage(z, 'tshuttle.helpers') +
+                empackage(z, 'tshuttle.ssnet') +
+                empackage(z, 'tshuttle.hostwatch') +
+                empackage(z, 'tshuttle.server') +
                 b"\n")
 
     # If the exec() program calls sys.exit(), it should exit python
@@ -172,7 +172,7 @@ def connect(ssh_cmd, rhostport, python, stderr, options):
             # you have a restricted shell on remote, you may only be
             # able to run python if it is in your PATH (and you can't
             # run programs specified with an absolute path). In that
-            # case, sshuttle might not work at all since it is not
+            # case, tshuttle might not work at all since it is not
             # possible to run python on the remote machine---even if
             # it is present.
             pycmd = ("P=python3; $P -V 2>%s || P=python; "

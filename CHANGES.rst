@@ -23,8 +23,8 @@ Added
 Fixed
 ~~~~~
 * Change license text to LGPL-2.1
-* Fix #494 sshuttle caught in infinite select() loop.
-* Include sshuttle version in verbose output.
+* Fix #494 tshuttle caught in infinite select() loop.
+* Include tshuttle version in verbose output.
 * Add psutil as dependency in setup.py
 * When subnets and excludes are specified with hostnames, use all IPs.
 * Update/document client's handling of IPv4 and IPv6.
@@ -143,7 +143,7 @@ Fixed
 * Various updates to documentation.
 * Don't crash if we can't look up peername
 * Fix missing string formatting argument
-* Moved sshuttle/tests into tests.
+* Moved tshuttle/tests into tests.
 * Updated bandit config.
 * Replace path /dev/null by os.devnull.
 * Added coverage report to tests.
@@ -200,7 +200,7 @@ Fixed
 * Fix compatibility with the sudoers file.
 * Stop using SO_REUSEADDR on sockets.
 * Declare 'verbosity' as global variable to placate linters.
-* Adds 'cd sshuttle' after 'git' to README and docs.
+* Adds 'cd tshuttle' after 'git' to README and docs.
 * Documentation for loading options from configuration file.
 * Load options from a file.
 * Fix firewall.py.
@@ -225,7 +225,7 @@ Added
 * Adds support for tunneling specific port ranges (#144).
 * Add support for iproute2.
 * Allow remote hosts with colons in the username.
-* Re-introduce ipfw support for sshuttle on FreeBSD with support for --DNS option as well.
+* Re-introduce ipfw support for tshuttle on FreeBSD with support for --DNS option as well.
 * Add support for PfSense.
 * Tests and documentation for systemd integration.
 * Allow subnets to be given only by file (-s).
@@ -236,7 +236,7 @@ Fixed
 * Fix UDP and DNS support on Python 2.7 with tproxy method.
 * Fixed tests after adding support for iproute2.
 * Small refactoring of netstat/iproute parsing.
-* Set started_by_sshuttle False after disabling pf.
+* Set started_by_tshuttle False after disabling pf.
 * Fix punctuation and explain Type=notify.
 * Move pytest-runner to tests_require.
 * Fix warning: closed channel got=STOP_SENDING.
@@ -247,7 +247,7 @@ Fixed
 * Fix typo, space not required here.
 * Update installation instructions.
 * Support using run from different directory.
-* Ensure we update sshuttle/version.py in run.
+* Ensure we update tshuttle/version.py in run.
 * Don't print python version in run.
 * Add CWD to PYTHONPATH in run.
 
@@ -306,7 +306,7 @@ Fixed
 0.75 - 2016-01-12
 -----------------
 
-* Revert change that broke sshuttle entry point.
+* Revert change that broke tshuttle entry point.
 
 
 0.74 - 2016-01-10

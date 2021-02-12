@@ -31,7 +31,7 @@ jobs:
         pip install -r requirements-tests.txt
     - name: Lint with flake8
       run: |
-        flake8 sshuttle tests --count --show-source --statistics
+        flake8 tshuttle tests --count --show-source --statistics
     - name: Test with pytest
       run: |
         PYTHONPATH=$PWD pytest

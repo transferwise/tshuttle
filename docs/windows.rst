@@ -1,13 +1,13 @@
 Microsoft Windows
 =================
-Currently there is no built in support for running sshuttle directly on
+Currently there is no built in support for running tshuttle directly on
 Microsoft Windows.
 
 What we can really do is to create a Linux VM with Vagrant (or simply
 Virtualbox if you like). In the Vagrant settings, remember to turn on bridged
-NIC. Then, run sshuttle inside the VM like below::
+NIC. Then, run tshuttle inside the VM like below::
 
-    sshuttle -l 0.0.0.0 -x 10.0.0.0/8 -x 192.168.0.0/16 0/0
+    tshuttle -l 0.0.0.0 -x 10.0.0.0/8 -x 192.168.0.0/16 0/0
 
 10.0.0.0/8 excludes NAT traffic of Vagrant and 192.168.0.0/16 excludes
 traffic to local area network (assuming that we're using 192.168.0.0 subnet).

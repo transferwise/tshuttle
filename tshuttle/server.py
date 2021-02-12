@@ -8,12 +8,12 @@ import os
 import platform
 
 
-import sshuttle.ssnet as ssnet
-import sshuttle.helpers as helpers
-import sshuttle.hostwatch as hostwatch
+import tshuttle.ssnet as ssnet
+import tshuttle.helpers as helpers
+import tshuttle.hostwatch as hostwatch
 import subprocess as ssubprocess
-from sshuttle.ssnet import Handler, Proxy, Mux, MuxWrapper
-from sshuttle.helpers import b, log, debug1, debug2, debug3, Fatal, \
+from tshuttle.ssnet import Handler, Proxy, Mux, MuxWrapper
+from tshuttle.helpers import b, log, debug1, debug2, debug3, Fatal, \
     resolvconf_random_nameserver, which, get_env
 
 
@@ -280,7 +280,7 @@ def main(latency_control, latency_buffer_size, auto_hosts, to_nameserver,
 
         debug1('latency control setting = %r' % latency_control)
         if latency_buffer_size:
-            import sshuttle.ssnet as ssnet
+            import tshuttle.ssnet as ssnet
             ssnet.LATENCY_BUFFER_SIZE = latency_buffer_size
 
         # synchronization header

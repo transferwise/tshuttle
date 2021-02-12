@@ -10,15 +10,15 @@ import shlex
 from fcntl import ioctl
 from ctypes import c_char, c_uint8, c_uint16, c_uint32, Union, Structure, \
     sizeof, addressof, memmove
-from sshuttle.firewall import subnet_weight
-from sshuttle.helpers import debug1, debug2, debug3, Fatal, family_to_string, \
+from tshuttle.firewall import subnet_weight
+from tshuttle.helpers import debug1, debug2, debug3, Fatal, family_to_string, \
     get_env, which
-from sshuttle.methods import BaseMethod
+from tshuttle.methods import BaseMethod
 
 
 _pf_context = {
-    'started_by_sshuttle': 0,
-    'loaded_by_sshuttle': True,
+    'started_by_tshuttle': 0,
+    'loaded_by_tshuttle': True,
     'Xtoken': []
 }
 _pf_fd = None
@@ -66,14 +66,14 @@ class Generic(object):
     def enable(self):
         if b'INFO:\nStatus: Disabled' in self.status:
             pfctl('-e')
-            _pf_context['started_by_sshuttle'] += 1
+            _pf_context['started_by_tshuttle'] += 1
 
     @staticmethod
     def disable(anchor):
         pfctl('-a %s -F all' % anchor)
-        if _pf_context['started_by_sshuttle'] == 1:
+        if _pf_context['started_by_tshuttle'] == 1:
             pfctl('-d')
-        _pf_context['started_by_sshuttle'] -= 1
+        _pf_context['started_by_tshuttle'] -= 1
 
     def query_nat(self, family, proto, src_ip, src_port, dst_ip, dst_port):
         [proto, family, src_port, dst_port] = [
@@ -184,12 +184,12 @@ class FreeBsd(Generic):
         # No env: No output.
         super(FreeBsd, self).enable()
         if returncode == 0:
-            _pf_context['loaded_by_sshuttle'] = True
+            _pf_context['loaded_by_tshuttle'] = True
 
     def disable(self, anchor):
         super(FreeBsd, self).disable(anchor)
-        if _pf_context['loaded_by_sshuttle'] and \
-                _pf_context['started_by_sshuttle'] == 0:
+        if _pf_context['loaded_by_tshuttle'] and \
+                _pf_context['started_by_tshuttle'] == 0:
             ssubprocess.call(['kldunload', 'pf'], env=get_env())
             # No env: No output.
 
@@ -407,7 +407,7 @@ def pf_get_dev():
 
 
 def pf_get_anchor(family, port):
-    return 'sshuttle%s-%d' % ('' if family == socket.AF_INET else '6', port)
+    return 'tshuttle%s-%d' % ('' if family == socket.AF_INET else '6', port)
 
 
 class Method(BaseMethod):

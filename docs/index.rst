@@ -1,4 +1,4 @@
-sshuttle: where transparent proxy meets VPN meets ssh
+tshuttle: where transparent proxy meets VPN meets ssh
 =====================================================
 
 :Date: |today|

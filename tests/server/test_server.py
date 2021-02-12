@@ -3,27 +3,27 @@ import socket
 
 from unittest.mock import patch, Mock
 
-import sshuttle.server
+import tshuttle.server
 
 
 def test__ipmatch():
-    assert sshuttle.server._ipmatch("1.2.3.4") is not None
-    assert sshuttle.server._ipmatch("::1") is None   # ipv6 not supported
-    assert sshuttle.server._ipmatch("42 Example Street, Melbourne") is None
+    assert tshuttle.server._ipmatch("1.2.3.4") is not None
+    assert tshuttle.server._ipmatch("::1") is None   # ipv6 not supported
+    assert tshuttle.server._ipmatch("42 Example Street, Melbourne") is None
 
 
 def test__ipstr():
-    assert sshuttle.server._ipstr("1.2.3.4", 24) == "1.2.3.4/24"
-    assert sshuttle.server._ipstr("1.2.3.4", 32) == "1.2.3.4"
+    assert tshuttle.server._ipstr("1.2.3.4", 24) == "1.2.3.4/24"
+    assert tshuttle.server._ipstr("1.2.3.4", 32) == "1.2.3.4"
 
 
 def test__maskbits():
-    netmask = sshuttle.server._ipmatch("255.255.255.0")
-    sshuttle.server._maskbits(netmask)
+    netmask = tshuttle.server._ipmatch("255.255.255.0")
+    tshuttle.server._maskbits(netmask)
 
 
-@patch('sshuttle.server.which', side_effect=lambda x: x == 'netstat')
-@patch('sshuttle.server.ssubprocess.Popen')
+@patch('tshuttle.server.which', side_effect=lambda x: x == 'netstat')
+@patch('tshuttle.server.ssubprocess.Popen')
 def test_listroutes_netstat(mock_popen, mock_which):
     mock_pobj = Mock()
     mock_pobj.stdout = io.BytesIO(b"""
@@ -35,15 +35,15 @@ Destination     Gateway         Genmask         Flags   MSS Window  irtt Iface
     mock_pobj.wait.return_value = 0
     mock_popen.return_value = mock_pobj
 
-    routes = sshuttle.server.list_routes()
+    routes = tshuttle.server.list_routes()
 
     assert list(routes) == [
         (socket.AF_INET, '192.168.1.0', 24)
     ]
 
 
-@patch('sshuttle.server.which', side_effect=lambda x: x == 'ip')
-@patch('sshuttle.server.ssubprocess.Popen')
+@patch('tshuttle.server.which', side_effect=lambda x: x == 'ip')
+@patch('tshuttle.server.ssubprocess.Popen')
 def test_listroutes_iproute(mock_popen, mock_which):
     mock_pobj = Mock()
     mock_pobj.stdout = io.BytesIO(b"""
@@ -53,7 +53,7 @@ default via 192.168.1.1 dev wlan0  proto static
     mock_pobj.wait.return_value = 0
     mock_popen.return_value = mock_pobj
 
-    routes = sshuttle.server.list_routes()
+    routes = tshuttle.server.list_routes()
 
     assert list(routes) == [
         (socket.AF_INET, '192.168.1.0', 24)

@@ -58,12 +58,12 @@ def resolvconf_nameservers(systemd_resolved):
     the DNS servers used by the system to resolve hostnames.
 
     If parameter is False, DNS servers are retrieved from only
-    /etc/resolv.conf. This behavior makes sense for the sshuttle
+    /etc/resolv.conf. This behavior makes sense for the tshuttle
     server.
 
     If parameter is True, we retrieve information from both
     /etc/resolv.conf and /run/systemd/resolve/resolv.conf (if it
-    exists). This behavior makes sense for the sshuttle client.
+    exists). This behavior makes sense for the tshuttle client.
 
     """
 
@@ -72,7 +72,7 @@ def resolvconf_nameservers(systemd_resolved):
     # If systemd-resolved is active, /etc/resolv.conf will point to
     # localhost and the actual DNS servers that systemd-resolved uses
     # are stored in /run/systemd/resolve/resolv.conf. For programs
-    # that use the localhost DNS server, having sshuttle read
+    # that use the localhost DNS server, having tshuttle read
     # /etc/resolv.conf is sufficient. However, resolved provides other
     # ways of resolving hostnames (such as via dbus) that may not
     # route requests through localhost. So, we retrieve a list of DNS
@@ -154,7 +154,7 @@ def family_to_string(family):
 
 
 def get_env():
-    """An environment for sshuttle subprocesses. See get_path()."""
+    """An environment for tshuttle subprocesses. See get_path()."""
     env = {
         'PATH': get_path(),
         'LC_ALL': "C",
@@ -165,7 +165,7 @@ def get_env():
 def get_path():
     """Returns a string of paths separated by os.pathsep.
 
-    Users might not have all of the programs sshuttle needs in their
+    Users might not have all of the programs tshuttle needs in their
     PATH variable (i.e., some programs might be in /sbin). Use PATH
     and a hardcoded set of paths to search through. This function is
     used by our which() and get_env() functions. If which() and the
@@ -193,8 +193,8 @@ def get_path():
 if sys.version_info >= (3, 3):
     from shutil import which as _which
 else:
-    # Although sshuttle does not officially support older versions of
-    # Python, some still run the sshuttle server on remote machines
+    # Although tshuttle does not officially support older versions of
+    # Python, some still run the tshuttle server on remote machines
     # with old versions of python.
     def _which(file, mode=os.F_OK | os.X_OK, path=None):
         if path is not None:

@@ -4,8 +4,8 @@ import struct
 
 import pytest
 from unittest.mock import Mock, patch, call
-from sshuttle.helpers import Fatal
-from sshuttle.methods import get_method
+from tshuttle.helpers import Fatal
+from tshuttle.methods import get_method
 
 
 def test_get_supported_features():
@@ -84,9 +84,9 @@ def test_firewall_command():
     assert not method.firewall_command("somthing")
 
 
-@patch('sshuttle.methods.nat.ipt')
-@patch('sshuttle.methods.nat.ipt_ttl')
-@patch('sshuttle.methods.nat.ipt_chain_exists')
+@patch('tshuttle.methods.nat.ipt')
+@patch('tshuttle.methods.nat.ipt_ttl')
+@patch('tshuttle.methods.nat.ipt_chain_exists')
 def test_setup_firewall(mock_ipt_chain_exists, mock_ipt_ttl, mock_ipt):
     mock_ipt_chain_exists.return_value = True
     method = get_method('nat')
@@ -130,29 +130,29 @@ def test_setup_firewall(mock_ipt_chain_exists, mock_ipt_ttl, mock_ipt):
         False,
         None)
     assert mock_ipt_chain_exists.mock_calls == [
-        call(AF_INET, 'nat', 'sshuttle-1025')
+        call(AF_INET, 'nat', 'tshuttle-1025')
     ]
     assert mock_ipt_ttl.mock_calls == [
-        call(AF_INET, 'nat', '-A', 'sshuttle-1025', '-j', 'RETURN',
+        call(AF_INET, 'nat', '-A', 'tshuttle-1025', '-j', 'RETURN',
              '-m', 'ttl', '--ttl', '63')
     ]
     assert mock_ipt.mock_calls == [
-        call(AF_INET, 'nat', '-D', 'OUTPUT', '-j', 'sshuttle-1025'),
-        call(AF_INET, 'nat', '-D', 'PREROUTING', '-j', 'sshuttle-1025'),
-        call(AF_INET, 'nat', '-F', 'sshuttle-1025'),
-        call(AF_INET, 'nat', '-X', 'sshuttle-1025'),
-        call(AF_INET, 'nat', '-N', 'sshuttle-1025'),
-        call(AF_INET, 'nat', '-F', 'sshuttle-1025'),
-        call(AF_INET, 'nat', '-I', 'OUTPUT', '1', '-j', 'sshuttle-1025'),
-        call(AF_INET, 'nat', '-I', 'PREROUTING', '1', '-j', 'sshuttle-1025'),
-        call(AF_INET, 'nat', '-A', 'sshuttle-1025', '-j', 'REDIRECT',
+        call(AF_INET, 'nat', '-D', 'OUTPUT', '-j', 'tshuttle-1025'),
+        call(AF_INET, 'nat', '-D', 'PREROUTING', '-j', 'tshuttle-1025'),
+        call(AF_INET, 'nat', '-F', 'tshuttle-1025'),
+        call(AF_INET, 'nat', '-X', 'tshuttle-1025'),
+        call(AF_INET, 'nat', '-N', 'tshuttle-1025'),
+        call(AF_INET, 'nat', '-F', 'tshuttle-1025'),
+        call(AF_INET, 'nat', '-I', 'OUTPUT', '1', '-j', 'tshuttle-1025'),
+        call(AF_INET, 'nat', '-I', 'PREROUTING', '1', '-j', 'tshuttle-1025'),
+        call(AF_INET, 'nat', '-A', 'tshuttle-1025', '-j', 'REDIRECT',
              '--dest', u'1.2.3.33/32', '-p', 'udp',
              '--dport', '53', '--to-ports', '1027'),
-        call(AF_INET, 'nat', '-A', 'sshuttle-1025', '-j', 'RETURN',
+        call(AF_INET, 'nat', '-A', 'tshuttle-1025', '-j', 'RETURN',
              '-m', 'addrtype', '--dst-type', 'LOCAL'),
-        call(AF_INET, 'nat', '-A', 'sshuttle-1025', '-j', 'RETURN',
+        call(AF_INET, 'nat', '-A', 'tshuttle-1025', '-j', 'RETURN',
              '--dest', u'1.2.3.66/32', '-p', 'tcp', '--dport', '8080:8080'),
-        call(AF_INET, 'nat', '-A', 'sshuttle-1025', '-j', 'REDIRECT',
+        call(AF_INET, 'nat', '-A', 'tshuttle-1025', '-j', 'REDIRECT',
              '--dest', u'1.2.3.0/24', '-p', 'tcp', '--dport', '8000:9000',
              '--to-ports', '1025')
     ]
@@ -162,14 +162,14 @@ def test_setup_firewall(mock_ipt_chain_exists, mock_ipt_ttl, mock_ipt):
 
     method.restore_firewall(1025, AF_INET, False, None)
     assert mock_ipt_chain_exists.mock_calls == [
-        call(AF_INET, 'nat', 'sshuttle-1025')
+        call(AF_INET, 'nat', 'tshuttle-1025')
     ]
     assert mock_ipt_ttl.mock_calls == []
     assert mock_ipt.mock_calls == [
-        call(AF_INET, 'nat', '-D', 'OUTPUT', '-j', 'sshuttle-1025'),
-        call(AF_INET, 'nat', '-D', 'PREROUTING', '-j', 'sshuttle-1025'),
-        call(AF_INET, 'nat', '-F', 'sshuttle-1025'),
-        call(AF_INET, 'nat', '-X', 'sshuttle-1025')
+        call(AF_INET, 'nat', '-D', 'OUTPUT', '-j', 'tshuttle-1025'),
+        call(AF_INET, 'nat', '-D', 'PREROUTING', '-j', 'tshuttle-1025'),
+        call(AF_INET, 'nat', '-F', 'tshuttle-1025'),
+        call(AF_INET, 'nat', '-X', 'tshuttle-1025')
     ]
     mock_ipt_chain_exists.reset_mock()
     mock_ipt_ttl.reset_mock()
