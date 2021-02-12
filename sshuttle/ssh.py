@@ -184,12 +184,12 @@ def connect(ssh_cmd, rhostport, python, stderr, options):
             os.environ['SSHPASS'] = str(password)
             argv = (["sshpass", "-e"] + sshl +
                     portl +
-                    [rhost, '--', pycmd])
+                    [rhost, pycmd])
 
         else:
             argv = (sshl +
                     portl +
-                    [rhost, '--', pycmd])
+                    [rhost, pycmd])
 
     # Our which() function searches for programs in get_path()
     # directories (which include PATH). This step isn't strictly
