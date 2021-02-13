@@ -17,9 +17,10 @@ The real repo is here: https://github.com/sshuttle/sshuttle**
 Obtaining tshuttle
 ------------------
 
-- Homebrew::
+Simplest way is to just install using pip:
+- pip3::
 
-      brew install transferwise/private/tshuttle
+      pip3 install .
 
 It is possible to install into a virtualenv as a non-root user.
 
