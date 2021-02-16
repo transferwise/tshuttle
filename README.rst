@@ -20,6 +20,8 @@ Obtaining tshuttle
 Simplest way is to just install using pip:
 - pip3::
 
+      git clone git@github.com:transferwise/tshuttle.git
+      cd tshuttle
       pip3 install .
 
 It is possible to install into a virtualenv as a non-root user.
@@ -31,6 +33,17 @@ It is possible to install into a virtualenv as a non-root user.
       git clone git@github.com:transferwise/tshuttle.git
       cd tshuttle
       ./setup.py install
+
+Using tshuttle with Teleport
+----------------------------
+
+Example to connect to 192.168.0.0/24 using Teleport JumpHost 1.2.3.4
+
+::
+   tshuttle   -e 'tsh ssh'    -r joe.bloggs@1.2.3.4 192.168.0.0/24
+   < in a new terminal >
+   ssh 192.1689.0.10 # some host in the destination subnet
+
 
 Documentation
 -------------
